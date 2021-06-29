@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/product/bulk', 'App\Http\Controllers\ProductController@storeMany');
+Route::put('/product/bulk', 'App\Http\Controllers\ProductController@updateMany');
+Route::resource('/product', 'App\Http\Controllers\ProductController');
+
+Route::get('/', function () {
+    return ["message" => @'hello'];
+});
+
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
