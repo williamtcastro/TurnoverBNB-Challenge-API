@@ -5,25 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-
-class Product extends Model
+class ProductHistory extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'price',
+        'product_id',
         'quantity'
     ];
 
     protected $casts = [
-        'name' => 'string',
-        'price' => 'float',
+        'product_id' => 'integer',
         'quantity' => 'integer'
     ];
 
-    public function quantity_history() 
+    public function product()
     {
-        return $this->hasMany(ProductHistory::class);
+        return $this->belongsTo(Product::class, 'id', 'product_id');
     }
 }

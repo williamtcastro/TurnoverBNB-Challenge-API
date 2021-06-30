@@ -58,7 +58,7 @@ class ProductApiTest extends TestCase
         $product = \App\Models\Product::factory()->create()->toArray();
         $productId = $product['id'];
         $response = $this->getJson("/api/product/$productId");
-        $response->assertStatus(200)->assertExactJson([
+        $response->assertStatus(200)->assertJsonFragment([
             "id" => $productId,
             "name" => $product['name'],
             "price" => $product['price'],
