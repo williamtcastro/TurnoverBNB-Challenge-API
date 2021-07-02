@@ -6,9 +6,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Models\Product;
 use App\Models\ProductHistory;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Validation\Rules\Exists;
-use Mockery\Undefined;
+use DB;
 
 class ProductController extends Controller
 {
@@ -19,8 +17,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //get all products
-        return Product::all();
+        return Product::all()->sortBy('id');
     }
 
     /**
@@ -83,7 +80,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if ($product != null) {
-            $productHistory = Product::find($id)->quantity_history;
+            $productHistory = Product::find($id)->quantity_history->sortByDesc('id');
             $product->quantity_history = $productHistory;
         } else {
             return response(['message' => false], 400);
@@ -148,6 +145,20 @@ class ProductController extends Controller
     public function destroy($id)
     {
         if (Product::destroy($id)) {
+            return ['message' => true];
+        }
+        return response(['message' => false], 400);
+    }
+
+    /**
+     * Remove the specified product from the database.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroyMany(Request $ids)
+    {
+        if (Product::destroy($ids->all())) {
             return ['message' => true];
         }
         return response(['message' => false], 400);

@@ -106,6 +106,27 @@ class ProductApiTest extends TestCase
     }
 
     /**
+     * Test to delete many products.
+     * 
+     * @return void
+     */
+    public function test_delete_bulk_product()
+    {
+        $products = \App\Models\Product::factory(5)->create()->toArray();
+        
+        $ids = [];
+
+        foreach ($products as $prod => $values) {
+            array_push($ids, $values['id']);
+        }
+
+        $response = $this->deleteJson("/api/product/bulk", $ids);
+        $response->assertStatus(200)->assertExactJson([
+            "message" => true
+        ]);
+    }
+
+    /**
      * Test to create bulk product.
      * 
      * @return void
@@ -129,7 +150,6 @@ class ProductApiTest extends TestCase
         $faker = \Faker\Factory::create();
         $products = \App\Models\Product::factory(5)->create()->toArray();
         $updatedProducts = array();
-
         foreach ($products as $prod => $values) {
             $changedProd = [
                 'id' => $values['id'],
