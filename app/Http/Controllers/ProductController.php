@@ -17,7 +17,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all()->sortBy('id');
+        return Product::all();
     }
 
     /**
@@ -80,7 +80,7 @@ class ProductController extends Controller
     {
         $product = Product::find($id);
         if ($product != null) {
-            $productHistory = Product::find($id)->quantity_history->sortByDesc('id');
+            $productHistory = Product::find($id)->quantity_history;
             $product->quantity_history = $productHistory;
         } else {
             return response(['message' => false], 400);
